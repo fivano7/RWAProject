@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MVCProject.Models.PodaciRacuna>
+
+@{
+    ViewBag.Title = "DetaljiRacuna";
+}
+
+<h2>Detalji računa</h2>
+
+
+
+<table class="table table-striped table-bordered">
+
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.BrojRacuna)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Komercijalist)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipKK)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BrojRacuna)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Komercijalist)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipKK)
+                </td>
+
+
+            </tr>
+            break;
+        }
+
+</table>
+
+<table class="table table-striped table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NazivProizvoda)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kolicina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NazivPotkategorije)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NazivKategorije)
+        </th>
+
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NazivProizvoda)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Kolicina)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NazivPotkategorije)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NazivKategorije)
+        </td>
+
+    </tr>
+}
+
+</table>

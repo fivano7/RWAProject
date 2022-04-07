@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Racuni";
+}
+
+<h2>Pregled računa kupaca</h2>
+
+<hr />
+
+@Html.Label(expression: "kupac", labelText: "Kupac:")
+@Html.TextBox(name: "kupac", htmlAttributes: new { @class = "form-control" }, value: null)
+
+<hr />
+
+<div id="racuniKupca">
+    <h3>Računi kupca</h3>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Broj računa</th>
+            <th>Datum izdavanja</th>
+            <th>Komentar</th>
+            <th>Podaci o računu</th>
+        </tr>
+    </table>
+
+    <p id="info"></p>
+</div>
+
+
+@section scripts {
+    <script>
+
+        $("#racuniKupca").hide();
+
+
+    //1.) nakon koliko min znakova se okine pretraga
+    //2.) gdje se nalaze odgovori za autocomplete
+    //3.) metoda koja će prikazati račune korisnika
+        $("#kupac").autocomplete({
+        source: '@Url.Action(actionName: "GetAutoCompleteKupci", controllerName: "Ajax")',
+        select: function (e, ui) {
+            e.preventDefault();
+
+            var kupac = {
+                ime: ui.item.label,
+                id: ui.item.value
+            };
+
+            $(this).val(kupac.ime);
+
+            prikaziRacuneKupca(kupac.id);
+
+
+            $("h3").html(`Računi kupca <a href='@Url.Action(controllerName: "Home", actionName: "Uredi")/${kupac.id}'>${kupac.ime}</a>`)
+        },
+
+        focus: function (e, ui) {
+            e.preventDefault();
+            $(this).val(ui.item.label)
+        },
+        minLength: 2
+        });
+
+        function prikaziRacuneKupca(id) {
+            $.ajax({
+                url: '@Url.Action(controllerName: "Ajax", actionName: "GetRacuniKupca")',
+                data: { id },
+                success: function (racuni) {
+                    if (racuni.length > 0) {
+                        $("#racuniKupca").fadeIn(500);
+                        $("p#info").html("");
+
+                        resetTable();
+
+                        $(racuni).each((index, racun) => {
+                            $("table.table").append(`<tr>
+                                    <td>${racun.IDRacun}</td>
+                                    <td>${racun.BrojRacuna}</td>
+                                    <td>${getDateFromJSON(racun.DatumIzdavanja)}</td>
+                                    <td>${racun.Komentar}</td>
+
+                                    <td>${`<a href='@Url.Action(controllerName: "Home", actionName: "DetaljiRacuna")/${racun.IDRacun}'>Detalji računa</a>`}</td>
+
+                                    </tr>`)
+
+                        });
+                    } else {
+                        $("#racuniKupca").hide();
+                        $("p#info").html("Kupac nema računa!");
+                    }
+                }
+            });
+        }
+
+        function resetTable() {
+
+            $("table.table tr:not(:first-of-type)").remove();
+        }
+
+        function getDateFromJSON(jsonDate) {
+            var startIndex = jsonDate.indexOf("(") + 1;
+            var endIndex = jsonDate.lastIndexOf(")");
+
+            var ms = Number(jsonDate.substring(startIndex, endIndex));
+            return new Date(ms).toLocaleDateString();
+        }
+
+    </script>
+}

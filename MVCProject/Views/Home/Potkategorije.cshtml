@@ -1,0 +1,41 @@
+﻿@using MVCProject.Models
+@model IEnumerable<MVCProject.Models.Potkategorija>
+
+@{
+    ViewBag.Title = "Potkategorije";
+}
+
+<h2>Potkategorije</h2>
+
+
+<table class="table table-striped table-bordered">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Naziv)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kategorija)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Naziv)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Kategorija.Naziv)
+    </td>
+    <td>
+        @Html.ActionLink("Uredi", "UrediPotkategoriju", new { id=item.IDPotkategorija}) |
+
+        @Html.ActionLink("Izbriši", "DeletePotkategorija", new { id=item.IDPotkategorija})
+    </td>
+</tr>
+    }
+
+</table>

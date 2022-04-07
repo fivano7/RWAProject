@@ -1,0 +1,67 @@
+﻿@model IEnumerable<MVCProject.Models.Kupac>
+
+@{
+    ViewBag.Title = "Prikaz kupaca";
+}
+
+<h2>Prikaz 50 kupaca</h2>
+
+
+
+
+<table class="table table-striped table-bordered">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Ime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Prezime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Telefon)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Grad)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Ime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prezime)
+            </td>
+            <td>
+                <a href="mailto:@item.Email">@item.Email</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Grad.Naziv)
+            </td>
+            <td>
+                @Html.ActionLink("Uredi", "Uredi", new { id = item.IDKupac })
+
+
+            </td>
+        </tr>
+
+    }
+
+ 
+
+</table>
+
+
+
+@Html.Partial("_KupacCount", (int)ViewBag.kupacCount)

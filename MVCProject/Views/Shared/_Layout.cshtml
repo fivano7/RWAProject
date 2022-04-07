@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - RWA Projekt</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Početna", "Index", "Home")</li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" style="margin: 4px 20px ;font-size: 1em" type="button" data-toggle="dropdown">
+                                Prikaz
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="font-size: 1em">
+                                <li>@Html.ActionLink("Prikaz kupaca", "Index", "Home")</li>
+                                <li>@Html.ActionLink("Prikaz računa", "Racuni", "Home")</li>
+                                <li>@Html.ActionLink("Prikaz proizvoda", "Proizvodi", "Home")</li>
+                                <li>@Html.ActionLink("Prikaz potkategorija", "Potkategorije", "Home")</li>
+                                <li>@Html.ActionLink("Prikaz kategorija", "Kategorije", "Home")</li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" style="margin: 4px 20px ;font-size: 1em" type="button" data-toggle="dropdown">
+                                Dodaj
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="font-size: 1em">
+                                <li>@Html.ActionLink("Dodaj kupca", "Dodaj", "Home")</li>
+                                <li>@Html.ActionLink("Dodaj proizvod", "DodajProizvod", "Home")</li>
+                                <li>@Html.ActionLink("Dodaj potkategoriju", "DodajPotkategoriju", "Home")</li>
+                                <li>@Html.ActionLink("Dodaj kategoriju", "DodajKategoriju", "Home")</li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li>@Html.ActionLink("Odjavi se", "Odjava", "Home")</li>
+
+                </ul>
+                
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - RWA Projekt</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery-ui")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

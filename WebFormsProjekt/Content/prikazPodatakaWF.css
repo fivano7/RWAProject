@@ -1,0 +1,17 @@
+﻿:root {
+    --main-color: #E26276;
+    
+}
+
+
+
+.container {
+    margin-top: 15px;
+    font-family: "Calibri";
+    /*   
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);*/
+}
+
+.sjena {
+    box-shadow: 0 0 100px 0px rgba(231 231 231), 0 0 1000px 0px rgb(231 231 231);
+}

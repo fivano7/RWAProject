@@ -1,0 +1,334 @@
+﻿
+
+CREATE TABLE Korisnik (
+IDKorisnik INT PRIMARY KEY IDENTITY,
+Email nvarchar(50) UNIQUE NOT NULL,
+Lozinka nvarchar(50) NOT NULL
+)
+
+INSERT INTO Korisnik(Email, Lozinka) VALUES ('pero@peric.hr', '12345')
+INSERT INTO Korisnik(Email, Lozinka) VALUES ('ana@anic.hr', '54321')
+
+GO
+
+
+---------------------------------------------------------------------
+
+CREATE PROC ProvjeraUspjesnostiLogiranja
+	@Email nvarchar(50),
+	@Lozinka nvarchar(50)
+AS
+BEGIN
+	SELECT * FROM Korisnik WHERE Email = @Email AND Lozinka = @Lozinka
+END
+GO
+--------------------------------------------------------------------
+
+CREATE PROC GetKupac
+	@IDKupac int
+AS
+BEGIN
+	SELECT k.*,g.DrzavaID, g.Naziv, g.IDGrad FROM Kupac AS k
+	JOIN Grad as g
+	ON k.GradID = g.IDGrad
+	WHERE IDKupac = @IDKupac
+END
+GO
+
+---------------------VRAĆA ODREĐEN BROJ KUPACA----------------------
+CREATE PROC SelectKupci
+	@amount INT
+AS
+BEGIN
+	SELECT TOP (@amount) k.*, g.DrzavaID, g.Naziv, g.IDGrad FROM Kupac AS k 
+	JOIN Grad as g 
+	ON k.GradID = g.IDGrad
+END
+GO
+-----------------------VRAĆA GRADOVE ZA NEKU DRŽAVU-----------------
+CREATE PROC GetGradovi
+	@DrzavaID int
+AS
+BEGIN
+	SELECT * FROM Grad WHERE DrzavaID = @DrzavaID
+	ORDER BY Naziv ASC
+END
+GO
+
+-------------------------------------------------------------------
+----------------------ISTO VRAĆA, ALI TOČNO 10 KUPACA---------------
+CREATE PROC DohvatiKupce
+AS
+BEGIN
+	SELECT top 50 * FROM Kupac AS k 
+	JOIN Grad as g 
+	ON k.GradID = g.IDGrad
+END
+GO
+
+
+---------------------------------------------------------------------
+CREATE PROCEDURE DohvatiKupca
+	@IDKupac int
+AS
+BEGIN
+	SELECT * FROM Kupac as k
+	JOIN Grad as g
+	ON k.GradID = g.IDGrad
+	WHERE k.IDKupac = @IDKupac
+END
+GO
+---------------------------------------------------------------------
+CREATE PROCEDURE DohvatiGradove
+AS
+BEGIN
+	SELECT * FROM Grad
+END
+GO
+---------------------------------------------------------------------
+CREATE PROC DohvatiBrojKupaca
+AS
+BEGIN
+	SELECT COUNT(*) FROM Kupac
+END
+GO
+---------------------------------------------------------------------
+create proc UpdateKupac
+	@IDKupac int,
+	@Ime nvarchar(50),
+	@Prezime nvarchar(50),
+	@Email nvarchar(50),
+	@Telefon nvarchar(50),
+	@GradID int
+as 
+begin
+	update Kupac set Ime=@Ime, Prezime=@Prezime, Email=@Email, Telefon=@Telefon, GradID=@GradID where IDKupac=@IDKupac
+END
+GO
+---------------------------------------------------------------------
+create proc InsertKupac
+	@Ime nvarchar(50),
+	@Prezime nvarchar(50),
+	@Email nvarchar(50),
+	@Telefon nvarchar(50),
+	@GradID int
+as 
+begin
+INSERT INTO Kupac(Ime, Prezime,Email,Telefon,GradID) VALUES (@Ime, @Prezime, @Email, @Telefon, @GradID)
+END
+GO
+---------------------------------------------------------------------
+CREATE PROC DohvatiRacuneKupca
+	@IDKupac int
+AS
+BEGIN
+	SELECT * FROM Racun WHERE KupacID = @IDKupac
+END
+GO
+---------------------------------------------------------------------
+-------------------------------------------------------------------
+-------HVATA SAMO PODATAK ZA KUPCA, BEZ POVEZIVANJA SA GRADOM--------
+
+create proc DohvatiKupce15
+as
+BEGIN
+	SELECT TOP 100 * FROM Kupac
+END
+GO
+
+------------------
+
+create proc DohvatiKupca15
+	@IDKupac int
+as
+BEGIN
+	SELECT * FROM Kupac WHERE IDKupac = @IDKupac
+END
+GO
+
+-----------------------MOJE PROCEDURE----------------------------------
+CREATE PROC SviPodaciNekogRacuna
+	@IDRacun int
+AS
+BEGIN
+select r.BrojRacuna,p.Naziv as NazivProizvoda,s.Kolicina as Kolicina, pk.Naziv as NazivPotkategorije,k.Naziv as NazivKategorije, kk.Tip as TipKK,  CONCAT (kom.Ime, ' ', kom.Prezime) as Komercijalist from Stavka as s
+INNER JOIN Proizvod as p
+ON s.ProizvodID = p.IDProizvod
+INNER JOIN Potkategorija as pk
+ON p.PotkategorijaID = pk.IDPotkategorija
+INNER JOIN Kategorija as k
+ON pk.KategorijaID = k.IDKategorija
+INNER JOIN Racun as r
+ON s.RacunID = r.IDRacun
+INNER JOIN KreditnaKartica as kk
+ON r.KreditnaKarticaID = kk.IDKreditnaKartica
+INNER JOIN Komercijalist as kom
+ON r.KomercijalistID = kom.IDKomercijalist
+where RacunID = @IDRacun
+END
+GO
+
+-------------------------------------------------------------------------
+
+CREATE PROC GetKategorije
+AS
+BEGIN
+	SELECT * FROM Kategorija
+END
+GO
+
+-------------------------------------------------------------------------
+CREATE PROC GetPotkategorija
+AS
+BEGIN
+	SELECT * FROM Potkategorija as pk
+	JOIN Kategorija as k
+	ON k.IDKategorija = pk.KategorijaID
+END
+GO
+
+-------------------------------------------------------------------------
+CREATE PROC GetProizvodi
+AS
+BEGIN	
+	SELECT * FROM Proizvod as p
+	JOIN Potkategorija as pk
+	ON p.PotkategorijaID = pk.IDPotkategorija
+	JOIN Kategorija as k
+	ON k.IDKategorija = pk.KategorijaID
+END
+GO
+
+--------------------------------------------------------------------------
+CREATE PROC GetKategorijaById
+	@IDKategorija int
+AS
+BEGIN
+	SELECT * FROM Kategorija WHERE IDKategorija = @IDKategorija
+END
+GO
+--------------------------------------------------------------------------
+
+CREATE PROC UpdateKategorija
+	@IDKategorija int,
+	@Naziv nvarchar(50)
+AS
+BEGIN
+	UPDATE Kategorija
+	SET Naziv = @Naziv
+	WHERE IDKategorija = @IDKategorija
+END
+GO
+
+-----------------------------------------------------------------------------
+CREATE PROC GetPotkategorijaById 
+	@IDPotkategorija int
+AS
+BEGIN
+	SELECT * FROM Potkategorija as pk
+	INNER JOIN Kategorija as k
+	ON pk.KategorijaID = k.IDKategorija
+	WHERE pk.IDPotkategorija = @IDPotkategorija
+END
+GO
+-----------------------------------------------------------------------------
+
+CREATE PROC UpdatePotkategorija 
+	@IDPotkategorija int,
+	@KategorijaID int,
+	@Naziv nvarchar(50)
+AS
+BEGIN
+	UPDATE Potkategorija
+	SET KategorijaID = @KategorijaID, Naziv = @Naziv
+	WHERE IDPotkategorija = @IDPotkategorija
+END
+GO
+-----------------------------------------------------------------------------
+CREATE PROC GetProizvodById
+	@IDProizvod int
+AS
+BEGIN
+	SELECT * FROM Proizvod as p
+	 WHERE IDProizvod = @IDProizvod
+END
+GO
+-------------------------------------------------------------------------------
+CREATE PROC UpdateProizvod 
+	@IDProizvod int,
+	@Naziv nvarchar(50),
+	@BrojProizvoda nvarchar(25),
+	@Boja nvarchar(15),
+	@MinimalnaKolicinaNaSkladistu smallint,
+	@CijenaBezPDV money,
+	@PotkategorijaID int
+AS
+BEGIN
+	UPDATE Proizvod
+	SET Naziv = @Naziv, BrojProizvoda = @BrojProizvoda, Boja = @Boja, MinimalnaKolicinaNaSkladistu = @MinimalnaKolicinaNaSkladistu, CijenaBezPDV = @CijenaBezPDV, PotkategorijaID = @PotkategorijaID
+	WHERE IDProizvod = @IDProizvod
+END
+GO
+--------------------------------------------------------------------------------
+CREATE PROC CreateKategorija
+
+	@Naziv nvarchar(50)
+AS
+BEGIN
+	INSERT INTO Kategorija(Naziv) VALUES (@Naziv)
+END
+GO
+
+---------------------------------------------------------------------------------
+CREATE PROC CreatePotkategorija
+@Naziv nvarchar(50),
+@KategorijaID int
+AS
+BEGIN
+	INSERT INTO Potkategorija(KategorijaID, Naziv) VALUES (@KategorijaID, @Naziv)
+END
+GO
+---------------------------------------------------------------------------------
+CREATE PROC CreateProizvod 
+	@Naziv nvarchar(50),
+	@BrojProizvoda nvarchar(25),
+	@Boja nvarchar(15),
+	@MinimalnaKolicinaNaSkladistu smallint,
+	@CijenaBezPDV money,
+	@PotkategorijaID int
+AS
+BEGIN
+	INSERT INTO Proizvod(Naziv, BrojProizvoda, Boja, MinimalnaKolicinaNaSkladistu, CijenaBezPDV, PotkategorijaID)
+	VALUES(@Naziv, @BrojProizvoda, @Boja, @MinimalnaKolicinaNaSkladistu, @CijenaBezPDV, @PotkategorijaID)
+END
+GO
+-----------------------------------------------------------------------------------
+CREATE PROC DeleteKategorija
+	@IDKategorija int
+AS
+BEGIN
+	DELETE FROM Stavka WHERE ProizvodID IN (SELECT IDProizvod FROM Proizvod WHERE PotkategorijaID IN (SELECT IDPotkategorija FROM Potkategorija WHERE KategorijaID = @IDKategorija))
+	DELETE FROM Proizvod WHERE PotkategorijaID IN (SELECT IDPotkategorija FROM Potkategorija WHERE KategorijaID = @IDKategorija)
+	DELETE FROM Potkategorija WHERE KategorijaID = @IDKategorija
+	DELETE FROM Kategorija WHERE IDKategorija = @IDKategorija
+END
+GO
+-----------------------------------------------------------------------------------
+CREATE PROC DeletePotkategorija
+	@IDPotkategorija int
+AS
+BEGIN
+	DELETE FROM Stavka WHERE ProizvodID IN (SELECT IDProizvod FROM Proizvod WHERE PotkategorijaID = @IDPotkategorija)
+	DELETE FROM Proizvod WHERE PotkategorijaID = @IDPotkategorija
+	DELETE FROM Potkategorija WHERE IDPotkategorija = @IDPotkategorija
+END
+GO
+------------------------------------------------------------------------------------
+CREATE PROC DeleteProizvod
+	@IDProizvod int
+AS
+BEGIN
+	DELETE FROM Stavka WHERE ProizvodID = @IDProizvod
+	DELETE FROM Proizvod WHERE IDProizvod = @IDProizvod
+END
+GO

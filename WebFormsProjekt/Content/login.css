@@ -1,0 +1,92 @@
+﻿:root {
+    --main-color: #E26276;
+}
+
+.login-container {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.lijevaStrana {
+    padding: 5%;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+
+.lijevaStrana h3 {
+    text-align: center;
+    color: #333;
+}
+
+.desnaStrana {
+    display: inline-flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 5%;
+    background: var(--main-color);
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+
+.desnaStrana h5,h3 {
+    display: flex;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+}
+
+/*.spanDesno {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}*/
+
+/*    .desnaStrana h5 {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        color: #fff;
+    }*/
+
+/*
+.login-container form {
+    padding: 10%;
+}*/
+
+.btnPrijava {
+    width: 50%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+
+}
+
+.lijevaStrana .btnPrijava {
+    font-weight: 600;
+    color: #fff;
+    background-color: var(--main-color);
+}
+
+/*.desnaStrana .btnPrijava {
+    font-weight: 600;
+    color: var(--main-color);
+    background-color: #fff;
+}*/
+
+/*.desnaStrana .zaboravljenaLozinka {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+*/
+.lijevaStrana .zaboravljenaLozinka {
+    color: var(--main-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/*-------------------------------*/
